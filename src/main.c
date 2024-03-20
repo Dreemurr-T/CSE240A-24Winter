@@ -47,11 +47,13 @@ handle_option(char *arg)
   } else if (!strncmp(arg,"--tournament:",13)) {
     bpType = TOURNAMENT;
     sscanf(arg+13,"%d:%d:%d", &ghistoryBits, &lhistoryBits, &pcIndexBits);
-  } else if (!strcmp(arg,"--custom")) {
+  } else if (!strncmp(arg,"--custom:",9)) {
     bpType = CUSTOM;
+    sscanf(arg+9,"%d:%d:%d:%d", &ghistoryBits, &lhistoryBits, &pcIndexBits, &gsBits);
+    // sscanf(arg+9,"%d:%d", &ghistoryBits, &pcIndexBits);
   } else if (!strcmp(arg,"--verbose")) {
     verbose = 1;
-  } else {
+  } else { 
     return 0;
   }
 
@@ -125,6 +127,13 @@ main(int argc, char *argv[])
 
     // Train the predictor
     train_predictor(pc, outcome);
+
+    // if (num_branches % 100000 == 0) {
+    //   printf("Branches:        %10d\n", num_branches);
+    //   printf("Incorrect:       %10d\n", mispredictions);
+    //   float mispredict_rate = 100*((float)mispredictions / (float)num_branches);
+    //   printf("Misprediction Rate: %7.3f\n", mispredict_rate);
+    // }
   }
 
   // Print out the mispredict statistics
